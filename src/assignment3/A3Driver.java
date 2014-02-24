@@ -5,19 +5,26 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 
 public class A3Driver 
 {
-	ArrayList<Item> shoppingCart = new ArrayList<Item>();
-
+	static ArrayList<Item> shoppingCart = new ArrayList<Item>();
+	static Map<String, Boolean> inputMap = new HashMap<String, Boolean>();
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) 
 	{
+		inputMap.put("NP", false);
+		inputMap.put("P", true);
+		inputMap.put("NF",false);
+		inputMap.put("F", true);
+		
 		if (args.length != 1) 
 		{
 			System.err.println ("Error: Incorrect number of command line arguments");
@@ -57,10 +64,84 @@ public class A3Driver
 	public static boolean processInput(String transaction)
 	{
 		boolean isValid = checkInput(transaction);
+		Scanner scanner = new Scanner(transaction);
 		System.out.println(isValid);
-		// TODO: if isValid==true do whatever was requested (start shopping, etc)
-		
+		String operation;
+		if(isValid){
+			// TODO: finish all operations
+			operation = scanner.next();
+			if(operation.equalsIgnoreCase("insert")){
+				insert(scanner);
+			}
+			else if(operation.equalsIgnoreCase("print")){
+				// TODO: Format this to look nice if needed
+				System.out.println(shoppingCart);
+			}
+			else if(operation.equalsIgnoreCase("search")){
+				search(scanner.next());
+			}
+			else if(operation.equalsIgnoreCase("update")){
+				update(scanner.next(), scanner.nextInt());
+			}
+			else if(operation.equalsIgnoreCase("delete")){
+				String name = scanner.next();
+				search(name);
+				delete(name);
+			}
+		}
 		return isValid;
+	}
+	
+	private static void delete(String name){
+		for(int i = 0; i<shoppingCart.size(); i++){
+			Item cur = shoppingCart.get(i);
+			if(name.equals(cur.getName())){
+				shoppingCart.remove(cur);
+				break;
+			}
+		}
+	}
+	
+	private static boolean update(String name, int quantity)
+	{
+		// TODO: this might have to be changed a little, not tested yet
+		for(int i = 0; i<shoppingCart.size(); i++)
+		{
+			Item cur = shoppingCart.get(i);
+			if(name.equals(cur.getName()))
+			{
+				cur.setQuantity(quantity);
+				System.out.println(cur);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private static void search(String name){
+		int quantityFound = 0;
+		for(Item item : shoppingCart)
+		{
+			if(item.getName().equals(name))
+			{
+				quantityFound++;
+			}
+		}
+		System.out.println(name+" :"+quantityFound);
+	}
+	
+	private static void insert(Scanner input)
+	{
+		String category = input.next();
+		if(category.equalsIgnoreCase("groceries")){
+			shoppingCart.add(new Grocery(input.next(), input.nextFloat(), input.nextInt(), input.nextFloat(), inputMap.get(input.next().toUpperCase())));
+		}
+		else if(category.equalsIgnoreCase("clothing")){
+			shoppingCart.add(new Clothing(input.next(), input.nextFloat(), input.nextInt(), input.nextFloat()));
+		}
+		else if(category.equalsIgnoreCase("electronics")){
+			shoppingCart.add(new Electronic(input.next(), Float.valueOf(input.next()), input.nextInt(), Float.valueOf(input.next()), inputMap.get(input.next().toUpperCase()), input.next()));
+		}
 	}
 	
 	private static boolean checkInput(String transaction){	

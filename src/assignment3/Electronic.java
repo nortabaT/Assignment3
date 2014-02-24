@@ -11,11 +11,12 @@ public class Electronic extends Item
 	 * @param fragile boolean if this item is fragile or not
 	 * @param state strict 2 letter phrase for the destination shipping state
 	 */
-	public Electronic(String name, float priceEach, float weight, int quantity, boolean fragile, String state){
-		super(name, priceEach, weight, quantity);
+	public Electronic(String name, float priceEach, int quantity, float weight, boolean fragile, String state){
+		super(name,priceEach,quantity,weight);
 		
 		this.deliveryState = state;
 		this.fragile = fragile;
+		getTotalCost();
 	}
 	
 	public float getTotalCost(){

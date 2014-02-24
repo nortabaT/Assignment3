@@ -1,5 +1,7 @@
 package assignment3;
 
+import java.text.NumberFormat;
+
 public class Item implements Comparable<Item>
 {
 	protected String name;
@@ -18,7 +20,7 @@ public class Item implements Comparable<Item>
 	 * @param weight weight in pounds
 	 * @param quantity number requested
 	 */
-	public Item(String name, float priceEach, float weight, int quantity){
+	public Item(String name, float priceEach, int quantity, float weight){
 		this.name = name;
 		this.priceEach = priceEach;
 		this.weight = weight;
@@ -30,6 +32,7 @@ public class Item implements Comparable<Item>
 	
 	public void setQuantity(int quantity){
 		this.quantity = quantity;
+		getTotalCost();
 	}
 	
 	public String getName(){
@@ -48,4 +51,9 @@ public class Item implements Comparable<Item>
 		
 		return this.name.compareTo(item.getName());
 	}
+	
+	public String toString(){
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		return "Name: "+name+" Quantity: "+quantity+" Price: "+formatter.format(priceTotal);
+	}	
 }

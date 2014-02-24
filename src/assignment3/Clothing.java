@@ -5,9 +5,10 @@ public class Clothing extends Item
 	/**
 	 * @see Item
 	 */
-	public Clothing(String name, float priceEach, float weight, int quantity)
+	public Clothing(String name, float priceEach, int quantity, float weight)
 	{
-		super(name, priceEach, weight, quantity);
+		super(name,priceEach,quantity,weight);
+		getTotalCost();
 	}
 	
 	public float getTotalCost(){
