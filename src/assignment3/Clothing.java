@@ -2,7 +2,9 @@ package assignment3;
 
 public class Clothing extends Item
 {
-	
+	/**
+	 * @see Item
+	 */
 	public Clothing(String name, float priceEach, float weight, int quantity)
 	{
 		super(name, priceEach, weight, quantity);
