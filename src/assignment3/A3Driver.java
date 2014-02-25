@@ -20,16 +20,13 @@ public class A3Driver
 	 */
 	public static void main(String[] args) 
 	{
-		inputMap.put("NP", false);
-		inputMap.put("P", true);
-		inputMap.put("NF",false);
-		inputMap.put("F", true);
-		
+
 		if (args.length != 1) 
 		{
 			System.err.println ("Error: Incorrect number of command line arguments");
 			System.exit(-1);
 		}
+		
 		processInputFile (args[0]);
 		
 	}
@@ -41,6 +38,7 @@ public class A3Driver
 		{
 			FileReader freader = new FileReader(filename);
 			BufferedReader reader = new BufferedReader(freader);
+			initInputMap();
 			
 			for (String in = reader.readLine(); in != null; in = reader.readLine()) 
 			{
@@ -65,10 +63,9 @@ public class A3Driver
 	{
 		boolean isValid = checkInput(transaction);
 		Scanner scanner = new Scanner(transaction);
-		System.out.println(isValid);
 		String operation;
 		if(isValid){
-			// TODO: finish all operations
+			// TODO: implement error handling if an operation method returns false
 			operation = scanner.next();
 			if(operation.equalsIgnoreCase("insert")){
 				insert(scanner);
@@ -88,18 +85,21 @@ public class A3Driver
 				search(name);
 				delete(name);
 			}
+		}else{
+			System.out.println("There is an error with the request: "+transaction);
 		}
 		return isValid;
 	}
 	
-	private static void delete(String name){
+	private static boolean delete(String name){
 		for(int i = 0; i<shoppingCart.size(); i++){
 			Item cur = shoppingCart.get(i);
 			if(name.equals(cur.getName())){
 				shoppingCart.remove(cur);
-				break;
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	private static boolean update(String name, int quantity)
@@ -127,7 +127,7 @@ public class A3Driver
 				quantityFound++;
 			}
 		}
-		System.out.println(name+" :"+quantityFound);
+		System.out.println(name+": "+quantityFound);
 	}
 	
 	private static void insert(Scanner input)
@@ -144,13 +144,21 @@ public class A3Driver
 		}
 	}
 	
+	private static void initInputMap()
+	{
+		inputMap.put("NP", false);
+		inputMap.put("P", true);
+		inputMap.put("NF",false);
+		inputMap.put("F", true);
+	}
+	
 	private static boolean checkInput(String transaction){	
-		String name = 		"(\\w+)";									// any word for the name
-		String price = 		" ([0-9]*\\.?[0-9]{0,2})";					// floating point number for price in dollars
-		String quantity = 	" ([0-9]+)";								// integer for quantity
-		String weight = 	" ([0-9]*\\.?[0-9]+)";						// floating point number for weight
-		String perishable = "( (p|np))";									// perishable attribute
-		String electronicInfo = "( f|nf) (a[lkzr]|c[aot]|de|fl|ga|hi|i[dlna]|k[sy]|la|m[edainsot]|"	// fragile + state attribute
+		String name = 		"(\\w+)";					// any word for the name
+		String price = 		" ([0-9]*\\.?[0-9]{0,2})";	// floating point number for price in dollars
+		String quantity = 	" ([0-9]+)";				// integer for quantity
+		String weight = 	" ([0-9]*\\.?[0-9]+)";		// floating point number for weight
+		String perishable = "( (p|np))";				// perishable attribute
+		String electronicInfo = "( f| nf) (a[lkzr]|c[aot]|de|fl|ga|hi|i[dlna]|k[sy]|la|m[edainsot]|"	// fragile + state attribute
 								+ "n[evhjmycd]|o[hkr]|pa|ri|s[cd]|t[nx]|ut|v[ta]|w[aviy])";
 		
 		boolean grocery = transaction.matches("(?i)^(insert groceries) "+name+price+quantity+weight+perishable+"$");

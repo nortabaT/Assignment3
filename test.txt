@@ -1,9 +1,5 @@
-insert electronics PS3 300 1 5.2 F TX
-insert groceries apple .50 1 1 P
-insert clothing pants 29.99 1 1
-insert clothing shirt 1.50 10 .2
-delete pants
-update shirt 40
-search PS3
-insert groceries beans 2.50 1 1.2 NP
+insert electronics gameboy 10 1 1 NF TX
+print
+delete gameboy
+insert electronics PS3 10 1 1 F NY
 print
