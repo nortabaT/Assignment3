@@ -205,6 +205,11 @@ public class A3Driver
 		inputMap.put("F", true);
 	}
 	
+	/**
+	 * 
+	 * @param transaction input from text file
+	 * @return boolean if text input is technically valid
+	 */
 	private static boolean checkInput(String transaction){	
 		String name = 		"(\\w+)";					// any word for the name
 		String price = 		" ([0-9]*\\.?[0-9]{0,2})";	// floating point number for price in dollars
