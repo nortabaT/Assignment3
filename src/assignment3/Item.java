@@ -25,7 +25,6 @@ public class Item implements Comparable<Item>
 		this.priceEach = priceEach;
 		this.weight = weight;
 		this.quantity = quantity;
-		this.priceTotal = price;
 		
 		price = quantity*priceEach;
 	}
@@ -33,6 +32,10 @@ public class Item implements Comparable<Item>
 	public void setQuantity(int quantity){
 		this.quantity = quantity;
 		getTotalCost();
+	}
+	
+	public int getQuantity(){
+		return quantity;
 	}
 	
 	public String getName(){
@@ -49,11 +52,11 @@ public class Item implements Comparable<Item>
 	@Override
 	public int compareTo(Item item) {
 		
-		return this.name.compareTo(item.getName());
+		return this.name.toUpperCase().compareTo(item.getName().toUpperCase());
 	}
 	
 	public String toString(){
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
-		return "Name: "+name+" Quantity: "+quantity+" Price: "+formatter.format(priceTotal);
+		return "Name: "+name+"\tQuantity: "+quantity+"\tPrice: "+formatter.format(priceTotal);
 	}	
 }

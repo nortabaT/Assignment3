@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -16,7 +19,7 @@ public class A3Driver
 	static Map<String, Boolean> inputMap = new HashMap<String, Boolean>();
 	
 	/**
-	 * @param args
+	 * @param args text file that is used for the shopping cart
 	 */
 	public static void main(String[] args) 
 	{
@@ -59,88 +62,138 @@ public class A3Driver
 		}
 	}
 	
-	public static boolean processInput(String transaction)
+	public static void processInput(String transaction)
 	{
 		boolean isValid = checkInput(transaction);
 		Scanner scanner = new Scanner(transaction);
 		String operation;
-		if(isValid){
-			// TODO: implement error handling if an operation method returns false
+		if(isValid)
+		{
 			operation = scanner.next();
-			if(operation.equalsIgnoreCase("insert")){
+			if(operation.equalsIgnoreCase("insert"))
+			{
 				insert(scanner);
 			}
-			else if(operation.equalsIgnoreCase("print")){
-				// TODO: Format this to look nice if needed
-				System.out.println(shoppingCart);
+			else if(operation.equalsIgnoreCase("print"))
+			{
+				print();
 			}
-			else if(operation.equalsIgnoreCase("search")){
+			else if(operation.equalsIgnoreCase("search"))
+			{
 				search(scanner.next());
 			}
-			else if(operation.equalsIgnoreCase("update")){
+			else if(operation.equalsIgnoreCase("update"))
+			{
 				update(scanner.next(), scanner.nextInt());
 			}
-			else if(operation.equalsIgnoreCase("delete")){
-				String name = scanner.next();
-				search(name);
-				delete(name);
-			}
-		}else{
-			System.out.println("There is an error with the request: "+transaction);
-		}
-		return isValid;
-	}
-	
-	private static boolean delete(String name){
-		for(int i = 0; i<shoppingCart.size(); i++){
-			Item cur = shoppingCart.get(i);
-			if(name.equals(cur.getName())){
-				shoppingCart.remove(cur);
-				return true;
+			else if(operation.equalsIgnoreCase("delete"))
+			{
+				delete(scanner.next());
 			}
 		}
-		return false;
+		else
+		{
+			System.out.println("Error in request: '"+transaction+"'\n");
+		}
 	}
 	
-	private static boolean update(String name, int quantity)
+	private static void print(){
+		float cartTotal = 0.0f;
+		Collections.sort(shoppingCart);
+		
+		System.out.println("Shopping cart: ");
+		for(Item a : shoppingCart){
+			cartTotal += a.getTotalCost();
+			System.out.println(a);
+		}
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		System.out.println("Total cost: "+formatter.format(cartTotal)+"\n");
+	}
+	
+	private static void delete(String name){
+		int quantity = 0;	
+		Iterator<Item> it = shoppingCart.iterator();
+		
+		while(it.hasNext()){
+			Item item = it.next();
+			if(item.getName().equalsIgnoreCase(name))
+			{
+				it.remove();
+				quantity++;
+			}
+		}
+		
+		if(quantity > 0)
+		{
+			System.out.println("Deleted item: "+name+" "+quantity+" time(s).\n");
+		}
+		else
+		{
+			System.out.println("Error deleting item not in cart: "+name+"\n");
+		}
+	}
+	
+	private static void update(String name, int quantity)
 	{
-		// TODO: this might have to be changed a little, not tested yet
+		if(quantity < 0){
+			System.out.println("Error updating item: quantity too low!");
+			return;
+		}
+		
+		boolean updated = false;
 		for(int i = 0; i<shoppingCart.size(); i++)
 		{
 			Item cur = shoppingCart.get(i);
-			if(name.equals(cur.getName()))
+			if(name.equalsIgnoreCase(cur.getName()))
 			{
 				cur.setQuantity(quantity);
-				System.out.println(cur);
-				return true;
+				System.out.println("Updated item:\nName: "+name+" Quantity: "+quantity+"\n");
+				updated = true;
+				break;
 			}
 		}
-		return false;
+		
+		if(!updated){
+			System.out.println("Error updating item not in cart: "+name+"\n");
+		}
 	}
 	
 	private static void search(String name){
-		int quantityFound = 0;
+		int requests = 0;
+		int quantity = 0;
 		for(Item item : shoppingCart)
 		{
-			if(item.getName().equals(name))
+			if(item.getName().equalsIgnoreCase(name))
 			{
-				quantityFound++;
+				quantity += item.getQuantity();
+				requests++;
 			}
 		}
-		System.out.println(name+": "+quantityFound);
+		System.out.println("Searched item: "+name+" \nItems in cart: "+requests+"\nQuantity total: "+quantity+"\n");
 	}
 	
 	private static void insert(Scanner input)
 	{
 		String category = input.next();
+		String name = input.next();
+		float priceEach = input.nextFloat();
+		int quantity = input.nextInt();
+		float weightEach = input.nextFloat();
+		
+		if(quantity <= 0)
+		{
+			System.out.println("Error inserting item: "+name+", quantity too low!\n");
+			return;
+		}
+		
 		if(category.equalsIgnoreCase("groceries")){
-			shoppingCart.add(new Grocery(input.next(), input.nextFloat(), input.nextInt(), input.nextFloat(), inputMap.get(input.next().toUpperCase())));
+			shoppingCart.add(new Grocery(name, priceEach, quantity, weightEach, inputMap.get(input.next().toUpperCase())));
 		}
 		else if(category.equalsIgnoreCase("clothing")){
-			shoppingCart.add(new Clothing(input.next(), input.nextFloat(), input.nextInt(), input.nextFloat()));
+			shoppingCart.add(new Clothing(name, priceEach, quantity, weightEach));
 		}
 		else if(category.equalsIgnoreCase("electronics")){
-			shoppingCart.add(new Electronic(input.next(), Float.valueOf(input.next()), input.nextInt(), Float.valueOf(input.next()), inputMap.get(input.next().toUpperCase()), input.next()));
+			shoppingCart.add(new Electronic(name, priceEach, quantity, weightEach, inputMap.get(input.next().toUpperCase()), input.next()));
 		}
 	}
 	

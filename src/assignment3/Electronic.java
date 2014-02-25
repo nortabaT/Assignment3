@@ -1,5 +1,7 @@
 package assignment3;
 
+import java.text.NumberFormat;
+
 public class Electronic extends Item
 {
 	protected boolean fragile;
@@ -33,4 +35,9 @@ public class Electronic extends Item
 		}
 		return priceTotal;
 	}
+	
+	public String toString(){
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		return "Name: "+name+"\tQuantity: "+quantity+"\tPrice: "+formatter.format(priceTotal)+"\tFragile: "+fragile+"\tState: "+deliveryState.toUpperCase();
+	}	
 }

@@ -1,5 +1,45 @@
-insert electronics gameboy 10 1 1 NF TX
+---------------------------------TEST ONE---------------------------------
+insert clothing shirtD 1 1 1
+insert clothing shirtA 1.0 1 1.0
+insert clothing shirtC 1.00 1 1.00
+insert clothing shirtB 1. 0 1
 print
-delete gameboy
-insert electronics PS3 10 1 1 F NY
+---------------------------------TEST TWO---------------------------------
+insert electronics PS4 299.99 1 2.5 F tx
+insert electronics PS4 299.99 1 2.5 nf TX
+insert Electronics PS4 299.99 1 2.5 f NY
+insert electronics PS4 299.99 1 2.5 NF ny
+print
+---------------------------------TEST THREE---------------------------------
+insert groceries apple 2.00 1 .5 P
+insert groceries apple 2.00 1 .5 np
+INSERT groceries apple 2.00 10 .5 p
+insert groceries apple 2.00 10 .5 NP
+print
+---------------------------------TEST FOUR (6 invalid cases)---------------------------------
+insert clothing overpricedShirt 60.99 1 1 P
+insert clothing-rippedJeans 49.99 1 1
+insert clothing fedora 101.10 1.0 1
+insert electronic fakeAsianPS4 199.99 1 2.00 F TX
+insert electronics fakeAsianXBOX 199.99 1 2.00 F CH
+insert groceries poisenedFood 1.50 10 2.00 perishable
+---------------------------------TEST FIVE (updating and searching)---------------------------------
+update apple 5
+update apple 2
+update shirtA 2
+search PS4
+search apple
+update shirtB 3
+update shirtX 200
+print
+---------------------------------TEST SIX (deleting)---------------------------------
+delete apple
+delete ShirtC
+delete ShirtX
+print
+---------------------------------TEST SEVEN (delete everything!)---------------------------------
+delete PS4
+delete ShirtA
+delete shirtB
+delete shirtD
 print

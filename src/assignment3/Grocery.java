@@ -1,5 +1,7 @@
 package assignment3;
 
+import java.text.NumberFormat;
+
 public class Grocery extends Item
 {
 	boolean perishable; 
@@ -23,4 +25,9 @@ public class Grocery extends Item
 		}
 		return priceTotal;
 	}
+	
+	public String toString(){
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		return "Name: "+name+"\tQuantity: "+quantity+"\tPrice: "+formatter.format(priceTotal)+"\tPerishable: "+perishable;
+	}	
 }
