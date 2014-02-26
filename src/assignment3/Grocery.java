@@ -15,7 +15,10 @@ public class Grocery extends Item
 		this.perishable = perishable;
 		getTotalCost();
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see assignment3.Item#getTotalCost()
+	 */
 	public float getTotalCost(){
 		priceTotal = price + 20*weight*quantity;
 		
@@ -25,7 +28,10 @@ public class Grocery extends Item
 		}
 		return priceTotal;
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see assignment3.Item#toString()
+	 */
 	public String toString(){
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
 		return "Name: "+name+"\tQuantity: "+quantity+"\tPrice: "+formatter.format(priceTotal)+"\tPerishable: "+perishable;

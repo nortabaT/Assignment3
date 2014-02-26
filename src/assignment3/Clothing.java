@@ -10,7 +10,10 @@ public class Clothing extends Item
 		super(name,priceEach,quantity,weight);
 		getTotalCost();
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see assignment3.Item#getTotalCost()
+	 */
 	public float getTotalCost(){
 		priceTotal = price + 20*weight*quantity;
 		priceTotal += priceTotal*TAX;

@@ -33,7 +33,9 @@ public class A3Driver
 		processInputFile (args[0]);
 		
 	}
-
+	/*
+	 * process input file and sends lines of the input to the driver
+	 */
 	public static void processInputFile(String filename) 
 	{ 
 		
@@ -61,7 +63,12 @@ public class A3Driver
 			System.exit(-1);
 		}
 	}
-	
+	/*
+	 * Processes the input string and determines which transaction is to be performed
+	 * @param isvalid verifies a correct input stream for all possible transactions
+	 * @param operation, the operation chosen by the input
+	 * @param scanner bring in another line from the input file
+	 */
 	public static void processInput(String transaction)
 	{
 		boolean isValid = checkInput(transaction);
@@ -96,7 +103,9 @@ public class A3Driver
 			System.out.println("Error in request: '"+transaction+"'\n");
 		}
 	}
-	
+	/*
+	 * performs the print transaction
+	 */
 	private static void print(){
 		float cartTotal = 0.0f;
 		Collections.sort(shoppingCart);
@@ -109,7 +118,9 @@ public class A3Driver
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
 		System.out.println("Total cost: "+formatter.format(cartTotal)+"\n");
 	}
-	
+	/* 
+	 * performs the delete transaction. Iterators through the shopping cart and deletes the appropriate value and prints to the screen
+	 */
 	private static void delete(String name){
 		int quantity = 0;	
 		Iterator<Item> it = shoppingCart.iterator();
@@ -132,7 +143,9 @@ public class A3Driver
 			System.out.println("Error deleting item not in cart: "+name+"\n");
 		}
 	}
-	
+	/* 
+	 * performs the update transaction. Iterators through the shopping cart and deletes the appropriate value
+	 */
 	private static void update(String name, int quantity)
 	{
 		if(quantity < 0){
@@ -157,7 +170,9 @@ public class A3Driver
 			System.out.println("Error updating item not in cart: "+name+"\n");
 		}
 	}
-	
+	/* 
+	 * performs the search transaction. searches through the shopping cart and prints the item found
+	 */
 	private static void search(String name){
 		int requests = 0;
 		int quantity = 0;
@@ -171,7 +186,9 @@ public class A3Driver
 		}
 		System.out.println("Searched item: "+name+" \nItems in cart: "+requests+"\nQuantity total: "+quantity+"\n");
 	}
-	
+	/* 
+	 * performs the insert transaction. Adds a new item to the shopping cart
+	 */
 	private static void insert(Scanner input)
 	{
 		String category = input.next();
@@ -196,7 +213,9 @@ public class A3Driver
 			shoppingCart.add(new Electronic(name, priceEach, quantity, weightEach, inputMap.get(input.next().toUpperCase()), input.next()));
 		}
 	}
-	
+	/*
+	 * initiates the input mapping
+	 */
 	private static void initInputMap()
 	{
 		inputMap.put("NP", false);
@@ -206,7 +225,7 @@ public class A3Driver
 	}
 	
 	/**
-	 * 
+	 * Performs all of the desired regex on the entire input stream and associates to appropriate boolean values  for that transaction
 	 * @param transaction input from text file
 	 * @return boolean if text input is technically valid
 	 */

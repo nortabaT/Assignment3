@@ -20,7 +20,10 @@ public class Electronic extends Item
 		this.fragile = fragile;
 		getTotalCost();
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see assignment3.Item#getTotalCost()
+	 */
 	public float getTotalCost(){
 		priceTotal = price + 20*weight*quantity;
 		
